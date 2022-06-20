@@ -1,0 +1,155 @@
+Arrays:
+
+const arreglo = [1, 2, 3, 4];
+arreglo.push(1); //añade un valor al array. //No recomendando porque si no me equivoco reemplaza los valores o algo asi.
+
+let arreglo2 = [...arreglo, 5]; //Método correcto para añadir valores, se llama spread.
+
+const arreglo3 = arreglo2.map(function(numero){
+    return numero * 2;
+}); // 
+
+//Esto es una funcion normal.
+const saludar = function(nombre){
+    return `Hola, ${nombre}`;
+{
+
+//Esto es una funcion flecha
+const saludar2 = (nombre) => {
+    return `Hola, ${nombre}`;
+}
+
+const saludar3 = (nombre) => `Hola, ${nombre}`; // Lo mismo pero simplificado.
+
+console.log(saludar2(`Juan`));
+
+//funcion flecho sin parámetros. Si te fijas lo que estas haciendo es devolver la creación de un objeto usuario.
+const getUser = () => {
+    return{
+        uid: 'ABC123',
+        username: 'Pepe'
+    }
+}
+
+//funcion flecha simplificada.
+const getUser = () => ({
+   uid: 'ABC123',
+   username: 'Pepe'
+});
+
+const persona = {
+   nombre : 'Tony',
+   edad: 45,
+   clave: 'Ironman'
+};
+
+const {nombre: nombre2} = persona; //Destructuración de objectos, muy util e importanta, asi no tenemos que acceder a un valor siempre con el nombre del objecto.atributo.
+ 
+const {nombre, edad, clave} = persona;
+
+console.log(nombre2);
+console.log(nombre, edad, clave); //Lo mismo pero varios valores.
+
+//Otros complejos mas potentes con desustructuracion.
+
+//Pasar el objeto persona a una funcion que desestructure.
+const retornaPersona = (usuario) => {
+    const{edad, clave, nombre} = usuario;
+}
+
+retornaPersona(persona);
+
+//Pasar a una función solamente algunas variables mediante desestructuración.
+const retornaPersona = ({nombre, edad}) => {
+    console.log(nombre, edad);
+}
+
+import {users} from './data/users'; //Nos imaginamos qu esto importa un array.
+
+//tipico if para encontrar en un array un objeto en concreto.
+const getUserById = (id) => {
+   return users.find( ( user ) =>{
+	if( user.id === id ){
+	    return true;
+	}else{
+	    return false;
+	}
+   });
+};
+
+console.log(getUserById(2));
+
+//Mismo if anterior pero simplificado.
+const getUserById = (id) => {
+   return users.find( (user) => user.id === id );
+};
+
+//Then es como un callback para ejecutar lo que quieres después de hacer algo primero, para poder hacer esto debemos pasarle un resolve o un reject.
+//Como puede verse, hago uso tanto del resolve, para indicar que se ha ejecutado bien la acción, como del reject para indicar que ha ocurrido algún problema.
+//A esto se le llaman promesas porque hacemos uso del método then. Aunque también existe el método finally, y el catch para los errores.
+//Estas promesas se utilizan sobre todo en llamadas con fecth al backend de la api.
+
+const promesa = new Promise( (resolve, reject) => 
+   setTimeout( () => {
+      const p1 = getUserById(2);
+      resolve(p1);
+      //reject( 'No se pudo encontrar el héroe' );
+   }, 2000)
+
+});
+
+promesa.then( () => {
+   console.log('Then de la promesa');
+})
+.catch( err => console.warn( err ) )
+
+//Mismo then pero simplificando haciendo uso de los parámetros:
+promesa.then( user => console.log('User', user )).catch( err => console.warn( err ));
+
+//llamadas al backend (fetchApi).
+
+const apiKey = 'foekfoewfkpswefkesf241241';
+
+const peticion = fecth(`http://api.giphy.com/v1/gifs/random?api_key=${apiKey}`);
+
+peticion.then( resp => {
+   resp.json();
+})
+.catch( err => console.warn(err));
+
+//import del config y el appFecth para realizar la llamada con get al backend.
+import { config, appFetch } from '../appFetch';
+
+export const getFolleto = (onSuccess) =>
+    appFetch(`/folleto/function::bydate||fol_centro::claudio`, config('GET'), onSuccess);
+
+//fetch hacia el backend como lo hace en el tutorial (Forma sencilla supongo).
+const apiKey = 'foekfoewfkpswefkesf241241';
+
+const peticion = fecth(`http://api.giphy.com/v1/gifs/random?api_key=${apiKey}`);
+
+peticion.then( resp => {
+   resp.json().then( data => {
+	console.log(data);
+   });
+})
+.catch( err => console.warn(err));
+
+//forma correcta de hacerlo
+
+peticion
+    .then( resp => resp.json() )
+    .then( ({ data }) => {
+	const { url } = data.images.original;
+	console.log(url);
+    })
+    .catch( console.warn );
+
+//Operador ternario para evitar hacer condiciones if
+
+const activo = true;
+
+const mensaje = ( activo ) ? 'Activo' : 'Inactivo'; 
+const mensaje2 = activo && 'Activo'; //Si activo es positivo guarda los cambios en mensaje
+
+console.log(mensaje);

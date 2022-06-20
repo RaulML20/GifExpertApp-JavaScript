@@ -1,0 +1,2 @@
+Revisar useState con Hook, es algo lioso, pero por lo que estoy viendo sirve cuando necesitas actualizar un componente constantemente.
+Por ejemplo algo que sume +1 a un número inicial. De esta forma se repinta por pantalla constantemente.
